@@ -116,8 +116,8 @@ namespace NeoSmart.StreamCompare
 #endif
 
                 var bytesRead = await Task.WhenAll(task1, task2);
-                var bytesRead1 = bytesRead[1];
-                var bytesRead2 = bytesRead[2];
+                var bytesRead1 = bytesRead[0];
+                var bytesRead2 = bytesRead[1];
 
                 if (bytesRead1 == 0 && bytesRead2 == 0)
                 {
