@@ -6,6 +6,10 @@
     <IsPackable>false</IsPackable>
 
     <LangVersion>8.0</LangVersion>
+
+    <AssemblyName>NeoSmart.StreamCompare.Tests</AssemblyName>
+
+    <RootNamespace>NeoSmart.StreamCompare.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

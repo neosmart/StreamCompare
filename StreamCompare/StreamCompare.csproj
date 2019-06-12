@@ -1,6 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFrameworks>netstandard2.0;netcoreapp2.2</TargetFrameworks>
+        <AssemblyName>NeoSmart.StreamCompare</AssemblyName>
+        <RootNamespace>NeoSmart.StreamCompare</RootNamespace>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>StreamCompare</PackageId>
+        <Authors>neosmart, Mahmoud Al-Qudsi</Authors>
+        <Company>NeoSmart Technologies</Company>
+        <Description>Easily and efficiently compare the contents of two Stream objects.</Description>
+        <Copyright>Copyright NeoSmart Technologies 2019</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>http://neosmart.net/blog/2019/compare-streams-nuget/</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/neosmart/StreamCompare</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>stream, comparison</PackageTags>
+        <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+        <AssemblyVersion>0.1.0.0</AssemblyVersion>
+        <FileVersion>0.1.0.0</FileVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

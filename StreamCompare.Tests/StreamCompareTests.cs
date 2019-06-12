@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace StreamCompare.Tests
+namespace NeoSmart.StreamCompare.Tests
 {
     [TestClass]
     public class StreamCompareTests

@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 
-namespace StreamCompare
+namespace NeoSmart.StreamCompare
 {
     internal class Memory
     {
