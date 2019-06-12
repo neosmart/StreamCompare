@@ -24,14 +24,14 @@ namespace NeoSmart.StreamCompare
             return AreEqualAsync(path1, path2, CancellationToken.None);
         }
 
-        public Task<bool> AreEqualAsync(string path1, string path2, CancellationToken cancel)
+        public async Task<bool> AreEqualAsync(string path1, string path2, CancellationToken cancel)
         {
             path1 = Path.GetFullPath(path1);
             path2 = Path.GetFullPath(path2);
 
             if (StringComparer.CurrentCulture.Compare(path1, path2) == 0)
             {
-                return Task.FromResult(true);
+                return true;
             }
 
             var fileInfo1 = new FileInfo(path1);
@@ -39,13 +39,13 @@ namespace NeoSmart.StreamCompare
 
             if (fileInfo1.Length != fileInfo2.Length)
             {
-                return Task.FromResult(false);
+                return false;
             }
 
             using (var stream1 = File.OpenRead(path1))
             using (var stream2 = File.OpenRead(path2))
             {
-                return _comparer.AreEqualAsync(stream1, stream2, cancel, false);
+                return await _comparer.AreEqualAsync(stream1, stream2, cancel, false);
             }
         }
     }
