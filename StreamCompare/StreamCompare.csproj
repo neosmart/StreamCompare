@@ -1,33 +1,38 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>netstandard1.3;netstandard2.0;netcoreapp2.2</TargetFrameworks>
         <AssemblyName>NeoSmart.StreamCompare</AssemblyName>
-        <RootNamespace>NeoSmart.StreamCompare</RootNamespace>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <PackageId>StreamCompare</PackageId>
+        <AssemblyOriginatorKeyFile>NeoSmart.StreamCompare.snk</AssemblyOriginatorKeyFile>
+        <AssemblyVersion>0.1.0.0</AssemblyVersion>
         <Authors>neosmart, Mahmoud Al-Qudsi</Authors>
         <Company>NeoSmart Technologies</Company>
-        <Description>Easily and efficiently compare the contents of two Stream objects.</Description>
         <Copyright>Copyright NeoSmart Technologies 2019</Copyright>
+        <DelaySign>false</DelaySign>
+        <Description>Easily and efficiently compare the contents of two Stream objects.</Description>
+        <FileVersion>0.1.0.0</FileVersion>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>StreamCompare</PackageId>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>http://neosmart.net/blog/2019/compare-streams-nuget/</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/neosmart/StreamCompare</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
-        <PackageTags>stream, comparison</PackageTags>
         <PackageReleaseNotes>Initial release</PackageReleaseNotes>
-        <AssemblyVersion>0.1.0.0</AssemblyVersion>
-        <FileVersion>0.1.0.0</FileVersion>
+        <PackageTags>stream, comparison</PackageTags>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/neosmart/StreamCompare</RepositoryUrl>
+        <RootNamespace>NeoSmart.StreamCompare</RootNamespace>
         <SignAssembly>true</SignAssembly>
-        <AssemblyOriginatorKeyFile>NeoSmart.StreamCompare.snk</AssemblyOriginatorKeyFile>
-        <DelaySign>false</DelaySign>
+        <TargetFrameworks>netstandard1.3;netstandard2.0;netcoreapp2.2</TargetFrameworks>
+        <Version>0.1.0</Version>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0'
-                            Or '$(TargetFramework)' == 'netstandard1.3' ">
+    <PropertyGroup>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard1.3'">
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
-    <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+    <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3'">
         <PackageReference Include="System.ValueTuple" Version="4.3.0" />
     </ItemGroup>
 </Project>
