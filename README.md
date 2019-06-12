@@ -53,9 +53,10 @@ reused to minimize buffer allocations where possible.
 Creates a new `StreamCompare` object with the default settings. The static
 `StreamCompare.DefaultBufferSize` property indicates what buffer size should be used.
 
-#### `StreamCompare(uint BufferSize)`
+#### `StreamCompare(uint bufferSize)`
 
-Creates a new `StreamCompare` object with the specified buffer size.
+Creates a new `StreamCompare` object with the specified buffer size, used instead of
+`StreamCompare.BufferSize`.
 
 #### `StreamCompare.AreEqualAsync(Stream stream1, Stream stream2, CancellationToken cancel, bool? forceLengthCompare)`
 
@@ -75,6 +76,18 @@ difference between the two streams is encountered. Streams are read in parallel 
 
 `FileCompare` is a convenience wrapper around `StreamCompare` that can be used to compare two files
 for equality via their paths. It may (should) be reused to minimize buffer allocations where possible.
+
+#### `FileCompare()`
+
+Creates a new `FileCompare` object used to compare the contents of files via their relative or
+absolute paths on the filesystem. A `StreamCompare` object is constructed with the default settings
+and buffer sizes under the hood.
+
+#### `FileCompare(uint bufferSize)`
+
+Creates a new `FileCompare` object used to compare the contents of files via their relative or
+absolute paths on the filesystem. The specified `bufferSize` is passed to the constructor of
+`StreamCompare` to be used as the underlying buffer size.
 
 #### `FileCompare.AreEqualAsync(string path1, string path2, CancellationToken cancel)`
 
