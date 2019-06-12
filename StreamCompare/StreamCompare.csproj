@@ -10,6 +10,7 @@
         <Description>Easily and efficiently compare the contents of two Stream objects.</Description>
         <FileVersion>0.1.2.0</FileVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <LangVersion>8.0</LangVersion>
         <PackageId>StreamCompare</PackageId>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>http://neosmart.net/blog/2019/compare-streams-nuget/</PackageProjectUrl>
