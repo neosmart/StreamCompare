@@ -19,7 +19,7 @@ namespace NeoSmart.StreamCompare
             _comparer = new StreamCompare((int) bufferSize);
         }
 
-        public Task<bool> Compare(string path1, string path2)
+        public Task<bool> CompareAsync(string path1, string path2)
         {
             return CompareAsync(path1, path2, CancellationToken.None);
         }
