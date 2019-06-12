@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp2.2</TargetFrameworks>
-  </PropertyGroup>
-
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;netcoreapp2.2</TargetFrameworks>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
 </Project>
