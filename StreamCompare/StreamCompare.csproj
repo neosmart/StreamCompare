@@ -2,13 +2,13 @@
     <PropertyGroup>
         <AssemblyName>NeoSmart.StreamCompare</AssemblyName>
         <AssemblyOriginatorKeyFile>NeoSmart.StreamCompare.snk</AssemblyOriginatorKeyFile>
-        <AssemblyVersion>0.1.3.0</AssemblyVersion>
+        <AssemblyVersion>0.1.4.0</AssemblyVersion>
         <Authors>neosmart, Mahmoud Al-Qudsi</Authors>
         <Company>NeoSmart Technologies</Company>
         <Copyright>Copyright NeoSmart Technologies 2019</Copyright>
         <DelaySign>false</DelaySign>
         <Description>Easily and efficiently compare the contents of two Stream objects.</Description>
-        <FileVersion>0.1.3.0</FileVersion>
+        <FileVersion>0.1.4.0</FileVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <LangVersion>8.0</LangVersion>
         <PackageId>StreamCompare</PackageId>
@@ -21,7 +21,7 @@
         <RootNamespace>NeoSmart.StreamCompare</RootNamespace>
         <SignAssembly>true</SignAssembly>
         <TargetFrameworks>netstandard1.3;netstandard2.0;netcoreapp2.2</TargetFrameworks>
-        <Version>0.1.3</Version>
+        <Version>0.1.4</Version>
     </PropertyGroup>
 
     <PropertyGroup>
