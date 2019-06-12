@@ -44,7 +44,7 @@ namespace NeoSmart.StreamCompare.Tests
             var scompare = new StreamCompare();
             using var stream1 = new MemoryStream(bytes);
 
-            Assert.IsTrue(await scompare.CompareAsync(stream1, stream1),
+            Assert.IsTrue(await scompare.AreEqualAsync(stream1, stream1),
                 "StreamCompare mismatch for stream against itself");
         }
 
@@ -63,7 +63,7 @@ namespace NeoSmart.StreamCompare.Tests
             using var stream1 = new MemoryStream(bytes1);
             using var stream2 = new MemoryStream(bytes2);
 
-            Assert.IsTrue(await scompare.CompareAsync(stream1, stream2),
+            Assert.IsTrue(await scompare.AreEqualAsync(stream1, stream2),
                 "StreamCompare mismatch for streams with identical content");
         }
 
@@ -92,7 +92,7 @@ namespace NeoSmart.StreamCompare.Tests
             using var stream1 = new MemoryStream(bytes1);
             using var stream2 = new MemoryStream(bytes2);
 
-            Assert.IsFalse(await scompare.CompareAsync(stream1, stream2),
+            Assert.IsFalse(await scompare.AreEqualAsync(stream1, stream2),
                 "StreamCompare match for streams with differing content");
         }
 
@@ -109,7 +109,7 @@ namespace NeoSmart.StreamCompare.Tests
 
             try
             {
-                Assert.IsTrue(await scompare.CompareAsync(stream1, stream2),
+                Assert.IsTrue(await scompare.AreEqualAsync(stream1, stream2),
                     "Comparison of two empty streams return false");
             }
             catch
@@ -131,7 +131,7 @@ namespace NeoSmart.StreamCompare.Tests
             {
                 try
                 {
-                    Assert.IsFalse(await scompare.CompareAsync(stream1, stream2),
+                    Assert.IsFalse(await scompare.AreEqualAsync(stream1, stream2),
                         "Comparing with an empty stream returned false match");
                 }
                 catch
@@ -145,7 +145,7 @@ namespace NeoSmart.StreamCompare.Tests
             {
                 try
                 {
-                    Assert.IsFalse(await scompare.CompareAsync(stream1, stream2),
+                    Assert.IsFalse(await scompare.AreEqualAsync(stream1, stream2),
                         "Comparing an empty stream against non-empty returned false match");
                 }
                 catch

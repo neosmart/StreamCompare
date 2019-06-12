@@ -19,12 +19,12 @@ namespace NeoSmart.StreamCompare
             _comparer = new StreamCompare((int) bufferSize);
         }
 
-        public Task<bool> CompareAsync(string path1, string path2)
+        public Task<bool> AreEqualAsync(string path1, string path2)
         {
-            return CompareAsync(path1, path2, CancellationToken.None);
+            return AreEqualAsync(path1, path2, CancellationToken.None);
         }
 
-        public Task<bool> CompareAsync(string path1, string path2, CancellationToken cancel)
+        public Task<bool> AreEqualAsync(string path1, string path2, CancellationToken cancel)
         {
             path1 = Path.GetFullPath(path1);
             path2 = Path.GetFullPath(path2);
@@ -45,7 +45,7 @@ namespace NeoSmart.StreamCompare
             using (var stream1 = File.OpenRead(path1))
             using (var stream2 = File.OpenRead(path2))
             {
-                return _comparer.CompareAsync(stream1, stream2, cancel, false);
+                return _comparer.AreEqualAsync(stream1, stream2, cancel, false);
             }
         }
     }

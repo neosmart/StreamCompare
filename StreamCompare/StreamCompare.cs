@@ -27,10 +27,10 @@ namespace NeoSmart.StreamCompare
             _buffer2 = new byte[BufferSize];
         }
 
-        public Task<bool> CompareAsync(Stream stream1, Stream stream2,
+        public Task<bool> AreEqualAsync(Stream stream1, Stream stream2,
             bool? forceLengthCompare = null)
         {
-            return CompareAsync(stream1, stream2, CancellationToken.None, forceLengthCompare);
+            return AreEqualAsync(stream1, stream2, CancellationToken.None, forceLengthCompare);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace NeoSmart.StreamCompare
         /// <param name="cancel"></param>
         /// <param name="forceLengthCompare"></param>
         /// <returns></returns>
-        public async Task<bool> CompareAsync(Stream stream1, Stream stream2,
+        public async Task<bool> AreEqualAsync(Stream stream1, Stream stream2,
             CancellationToken cancel, bool? forceLengthCompare = null)
         {
             if (stream1 == stream2)
