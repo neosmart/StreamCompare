@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace NeoSmart.StreamCompare
 {
-    public readonly struct ChangeContext : IDisposable
+    internal readonly struct ChangeContext : IDisposable
     {
         private readonly SynchronizationContext _previous;
 
