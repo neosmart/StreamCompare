@@ -103,12 +103,17 @@ namespace NeoSmart.StreamCompare
 
 #if DEBUG
                 // +1 in Math.Min() is to prevent on overflow when testing pathological 0-length streams
-                var bytesRead1 = await stream1.ReadAsync(_buffer1, 0, rng.Next(1, (int) Math.Min(stream1.Length - offset1 + 1, BufferSize)), cancel);
-                var bytesRead2 = await stream2.ReadAsync(_buffer2, 0, rng.Next(1, (int) Math.Min(stream2.Length - offset2 + 1, BufferSize)), cancel);
+                var task1 = stream1.ReadAsync(_buffer1, 0, rng.Next(1, (int) Math.Min(stream1.Length - offset1 + 1, BufferSize)), cancel);
+                var task2 = stream2.ReadAsync(_buffer2, 0, rng.Next(1, (int) Math.Min(stream2.Length - offset2 + 1, BufferSize)), cancel);
+
 #else
-                var bytesRead1 = await stream1.ReadAsync(_buffer1, 0, BufferSize, cancel);
-                var bytesRead2 = await stream2.ReadAsync(_buffer2, 0, BufferSize, cancel);
+                var task1 = stream1.ReadAsync(_buffer1, 0, BufferSize, cancel);
+                var task2 = stream2.ReadAsync(_buffer2, 0, BufferSize, cancel);
 #endif
+
+                var bytesRead = await Task.WhenAll(task1, task2);
+                var bytesRead1 = bytesRead[1];
+                var bytesRead2 = bytesRead[2];
 
                 if (bytesRead1 == 0 && bytesRead2 == 0)
                 {
