@@ -5,19 +5,32 @@ using System.Threading;
 
 namespace NeoSmart.StreamCompare
 {
-    internal readonly struct ChangeContext : IDisposable
+    internal static class ChangeContext
     {
-        private readonly SynchronizationContext _previous;
-
-        public ChangeContext(SynchronizationContext newContext = null)
+        private readonly struct InnerChangeContext : IDisposable
         {
-            _previous = SynchronizationContext.Current;
-            SynchronizationContext.SetSynchronizationContext(newContext);
+            private readonly SynchronizationContext _previous;
+
+            public InnerChangeContext(SynchronizationContext newContext)
+            {
+                _previous = SynchronizationContext.Current;
+                SynchronizationContext.SetSynchronizationContext(newContext);
+            }
+
+            public void Dispose()
+            {
+                SynchronizationContext.SetSynchronizationContext(_previous);
+            }
         }
 
-        public void Dispose()
+        public static IDisposable To(SynchronizationContext newContext)
         {
-            SynchronizationContext.SetSynchronizationContext(_previous);
+            return new InnerChangeContext(newContext);
+        }
+
+        public static IDisposable NoContext()
+        {
+            return To(null);
         }
     }
 }

@@ -56,7 +56,7 @@ namespace NeoSmart.StreamCompare
 
             // Forcibly relinquish whatever SynchronizationContext we were started with: we don't
             // need it for anything and it can slow us down. It'll restore itself when we're done.
-            using var nocontext = new ChangeContext();
+            using var nocontext = ChangeContext.NoContext();
 
 #if DEBUG
             bool lengthsCompared = false;
