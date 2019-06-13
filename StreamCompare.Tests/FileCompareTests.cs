@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NeoSmart.StreamCompare.Tests
@@ -99,6 +100,37 @@ namespace NeoSmart.StreamCompare.Tests
 
             var fcompare = new FileCompare();
             Assert.IsTrue(await fcompare.AreEqualAsync(path1, path2));
+
+            File.Delete(path1);
+            File.Delete(path2);
+        }
+
+        [TestMethod]
+        public async Task TestCancellation()
+        {
+            var bytes = new byte[StreamCompare.DefaultBufferSize];
+
+            var path1 = Path.GetRandomFileName();
+            var path2 = Path.GetRandomFileName();
+
+            using (var file1 = File.Create(path1))
+            using (var file2 = File.Create(path2))
+            {
+                var tasks = new[]
+                {
+                    file1.WriteAsync(bytes),
+                    file2.WriteAsync(bytes),
+                };
+
+                await Task.WhenAll(tasks.Select(t => t.AsTask()));
+            }
+
+            var fcompare = new FileCompare();
+            var canceled = new CancellationToken(true);
+            await Assert.ThrowsExceptionAsync<TaskCanceledException>(async () =>
+            {
+                await fcompare.AreEqualAsync(path1, path2, canceled);
+            });
 
             File.Delete(path1);
             File.Delete(path2);

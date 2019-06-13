@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NeoSmart.StreamCompare.Tests
@@ -152,6 +153,24 @@ namespace NeoSmart.StreamCompare.Tests
                 {
                     Assert.Fail("Comparing empty stream against non-empty threw an exception");
                 }
+            }
+        }
+
+        [TestMethod]
+        public async Task TestCancellation()
+        {
+            var bytes = new byte[StreamCompare.DefaultBufferSize];
+
+            using (var stream1 = new MemoryStream(bytes))
+            using (var stream2 = new MemoryStream(bytes))
+            {
+                var canceled = new CancellationToken(true);
+
+                await Assert.ThrowsExceptionAsync<TaskCanceledException>(async () =>
+                {
+                    var scompare = new StreamCompare();
+                    await scompare.AreEqualAsync(stream1, stream2, canceled);
+                });
             }
         }
     }
