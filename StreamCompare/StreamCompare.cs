@@ -84,8 +84,6 @@ namespace NeoSmart.StreamCompare
 #if DEBUG
             // Used for sanity checking in Debug mode
             long previousOffset = -1;
-            // Used for forcing pathological behavior in Debug mode
-            var rng = new Random();
 #endif
 
             long offset1 = 0;
@@ -106,11 +104,6 @@ namespace NeoSmart.StreamCompare
 #endif
 
 #if DEBUG
-                // +1 in Math.Min() is to prevent on overflow when testing pathological 0-length streams
-                var task1 = stream1.ReadAsync(_buffer1, 0, rng.Next(1, (int) Math.Min(stream1.Length - offset1 + 1, BufferSize)), cancel);
-                var task2 = stream2.ReadAsync(_buffer2, 0, rng.Next(1, (int) Math.Min(stream2.Length - offset2 + 1, BufferSize)), cancel);
-
-#else
                 var task1 = stream1.ReadAsync(_buffer1, 0, BufferSize, cancel);
                 var task2 = stream2.ReadAsync(_buffer2, 0, BufferSize, cancel);
 #endif

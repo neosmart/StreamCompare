@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 namespace NeoSmart.StreamCompare.Tests
 {
     [TestClass]
+    [ExcludeFromCodeCoverage]
     public class StreamCompareTests
     {
         [TestMethod]
@@ -237,6 +239,80 @@ namespace NeoSmart.StreamCompare.Tests
             using (var stream2 = new MemoryStream(bytes2))
             {
                 var scompare = new StreamCompare();
+                Assert.IsFalse(await scompare.AreEqualAsync(stream1, stream2, false));
+            }
+        }
+
+        [TestMethod]
+        public async Task UnseekableStreamComparison()
+        {
+            var bytes1 = new byte[StreamCompare.DefaultBufferSize * 2];
+            var bytes2 = new byte[bytes1.Length];
+
+            var rng = new Random();
+            rng.NextBytes(bytes1);
+
+            bytes1.CopyTo(bytes2, 0);
+
+            using (var stream1 = new MemoryStream(bytes1))
+            using (var stream2 = new UnseekableMemoryStream(bytes2))
+            {
+                var scompare = new StreamCompare();
+                Assert.IsTrue(await scompare.AreEqualAsync(stream1, stream2, false));
+            }
+        }
+
+        [TestMethod]
+        public async Task UnevenReadComparisonMatching()
+        {
+            var bytes1 = new byte[StreamCompare.DefaultBufferSize * 2];
+            var bytes2 = new byte[bytes1.Length];
+
+            var rng = new Random();
+            rng.NextBytes(bytes1);
+
+            bytes1.CopyTo(bytes2, 0);
+
+            using (var stream1 = new MemoryStream(bytes1))
+            using (var stream2 = new UnseekableMemoryStream(bytes2))
+            {
+                stream2.ReadModifier = 0.7;
+
+                var scompare = new StreamCompare();
+                Assert.IsTrue(await scompare.AreEqualAsync(stream1, stream2, false));
+            }
+        }
+
+        [TestMethod]
+        public async Task UnevenReadComparisonNotMatching()
+        {
+            var bytes1 = new byte[StreamCompare.DefaultBufferSize * 2];
+            var bytes2 = new byte[bytes1.Length];
+
+            var rng = new Random();
+            rng.NextBytes(bytes1);
+
+            bytes1.CopyTo(bytes2, 0);
+            bytes2[bytes2.Length - 1] += 1;
+
+            using (var stream1 = new MemoryStream(bytes1))
+            using (var stream2 = new UnseekableMemoryStream(bytes2))
+            {
+                stream2.ReadModifier = 0.7;
+
+                var scompare = new StreamCompare();
+                // Automatic forceLengthCompare
+                Assert.IsFalse(await scompare.AreEqualAsync(stream1, stream2));
+            }
+
+            // And again with stream1 reading less
+            using (var stream1 = new UnseekableMemoryStream(bytes1))
+            using (var stream2 = new MemoryStream(bytes2))
+            {
+                stream1.ReadModifier = 0.7;
+
+                var scompare = new StreamCompare();
+                // Explicit forceLengthCompare
                 Assert.IsFalse(await scompare.AreEqualAsync(stream1, stream2, false));
             }
         }
