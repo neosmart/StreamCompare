@@ -15,6 +15,16 @@ namespace NeoSmart.StreamCompare.Tests
         const uint FileSize = 2048;
 
         [TestMethod]
+        public void FileCompareInit()
+        {
+            // With the default buffer size
+            var fcompare = new FileCompare();
+
+            // With a custom buffer size
+            fcompare = new FileCompare((uint)(StreamCompare.DefaultBufferSize / 7));
+        }
+
+        [TestMethod]
         public async Task BasicFileCompare()
         {
             var path1 = Path.GetRandomFileName();
@@ -103,6 +113,31 @@ namespace NeoSmart.StreamCompare.Tests
 
             File.Delete(path1);
             File.Delete(path2);
+        }
+
+        [TestMethod]
+        public async Task CompareDifferentLengths()
+        {
+            var bytes = new byte[StreamCompare.DefaultBufferSize * 2];
+
+            var path1 = Path.GetRandomFileName();
+            var path2 = Path.GetRandomFileName();
+
+            using (var file1 = File.Create(path1))
+            using (var file2 = File.Create(path2))
+            {
+                var tasks = new[]
+                {
+                    file1.WriteAsync(bytes),
+                    file2.WriteAsync(bytes.AsMemory(12))
+                };
+
+                await Task.WhenAll(tasks.Select(t => t.AsTask()));
+            }
+
+            // And use a custom buffer size
+            var fcompare = new FileCompare(3907); // prime number for good measure
+            Assert.IsFalse(await fcompare.AreEqualAsync(path1, path2));
         }
 
         [TestMethod]

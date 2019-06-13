@@ -97,6 +97,29 @@ namespace NeoSmart.StreamCompare.Tests
                 "StreamCompare match for streams with differing content");
         }
 
+        [TestMethod]
+        public async Task CompareDifferentLengths()
+        {
+            var rng = new Random();
+            var bytes1 = new byte[StreamCompare.DefaultBufferSize];
+            var bytes2 = new byte[StreamCompare.DefaultBufferSize / 2 + StreamCompare.DefaultBufferSize / 4 + 7];
+
+            rng.NextBytes(bytes1);
+            rng.NextBytes(bytes2);
+
+            var scompare = new StreamCompare();
+            using var stream1 = new MemoryStream(bytes1);
+            using var stream2 = new MemoryStream(bytes2);
+
+            // First try with explicit `Length` short-circuiting
+            Assert.IsFalse(await scompare.AreEqualAsync(stream1, stream2, true),
+                "StreamCompare match for streams with differing content");
+
+            // Then try with explicit no `Length` short-circuiting
+            Assert.IsFalse(await scompare.AreEqualAsync(stream1, stream2, false),
+                "StreamCompare match for streams with differing content");
+        }
+
 
         [TestMethod]
         public async Task CompareEmpty()
@@ -108,15 +131,8 @@ namespace NeoSmart.StreamCompare.Tests
             using var stream1 = new MemoryStream(bytes1);
             using var stream2 = new MemoryStream(bytes2);
 
-            try
-            {
-                Assert.IsTrue(await scompare.AreEqualAsync(stream1, stream2),
-                    "Comparison of two empty streams return false");
-            }
-            catch
-            {
-                Assert.Fail("Comparing empty streams threw an exception");
-            }
+            Assert.IsTrue(await scompare.AreEqualAsync(stream1, stream2),
+                "Comparison of two empty streams return false");
         }
 
         [TestMethod]
@@ -130,29 +146,15 @@ namespace NeoSmart.StreamCompare.Tests
             using (var stream1 = new MemoryStream(nonempty))
             using (var stream2 = new MemoryStream(empty))
             {
-                try
-                {
-                    Assert.IsFalse(await scompare.AreEqualAsync(stream1, stream2),
-                        "Comparing with an empty stream returned false match");
-                }
-                catch
-                {
-                    Assert.Fail("Comparing against an empty stream threw an exception");
-                }
+                Assert.IsFalse(await scompare.AreEqualAsync(stream1, stream2),
+                    "Comparing with an empty stream returned false match");
             }
 
             using (var stream1 = new MemoryStream(empty))
             using (var stream2 = new MemoryStream(nonempty))
             {
-                try
-                {
-                    Assert.IsFalse(await scompare.AreEqualAsync(stream1, stream2),
-                        "Comparing an empty stream against non-empty returned false match");
-                }
-                catch
-                {
-                    Assert.Fail("Comparing empty stream against non-empty threw an exception");
-                }
+                Assert.IsFalse(await scompare.AreEqualAsync(stream1, stream2),
+                    "Comparing an empty stream against non-empty returned false match");
             }
         }
 
@@ -166,11 +168,76 @@ namespace NeoSmart.StreamCompare.Tests
             {
                 var canceled = new CancellationToken(true);
 
+                var scompare = new StreamCompare();
                 await Assert.ThrowsExceptionAsync<TaskCanceledException>(async () =>
                 {
-                    var scompare = new StreamCompare();
                     await scompare.AreEqualAsync(stream1, stream2, canceled);
                 });
+            }
+        }
+
+        [TestMethod]
+        public async Task StreamsDifferingInLastByte()
+        {
+            var bytes1 = new byte[StreamCompare.DefaultBufferSize * 2 + (StreamCompare.DefaultBufferSize - 7)];
+            var bytes2 = new byte[bytes1.Length];
+
+            var rng = new Random();
+            rng.NextBytes(bytes1);
+
+            // Make bytes2 a copy of bytes1 but differing in the very last byte only
+            bytes1.CopyTo(bytes2, 0);
+            bytes2[bytes2.Length - 1] += 1;
+
+            using (var stream1 = new MemoryStream(bytes1))
+            using (var stream2 = new MemoryStream(bytes2))
+            {
+                var scompare = new StreamCompare();
+                Assert.IsFalse(await scompare.AreEqualAsync(stream1, stream2));
+            }
+        }
+
+        [TestMethod]
+        public async Task DuplicateStreamsDifferentLengths()
+        {
+            var bytes1 = new byte[StreamCompare.DefaultBufferSize];
+            var bytes2 = new byte[bytes1.Length];
+
+            var rng = new Random();
+            rng.NextBytes(bytes1);
+            bytes1.CopyTo(bytes2, 0);
+
+            Array.Resize(ref bytes2, bytes2.Length - 7);
+
+            using (var stream1 = new MemoryStream(bytes1))
+            using (var stream2 = new MemoryStream(bytes2))
+            {
+                var scompare = new StreamCompare();
+                Assert.IsFalse(await scompare.AreEqualAsync(stream1, stream2, false));
+            }
+        }
+
+        [TestMethod]
+        public async Task DifferentStreamsDifferentLengths()
+        {
+            var bytes1 = new byte[StreamCompare.DefaultBufferSize * 2];
+            var bytes2 = new byte[bytes1.Length];
+
+            var rng = new Random();
+            rng.NextBytes(bytes1);
+            bytes1.CopyTo(bytes2, 0);
+
+            // Make bytes2 a different length (shorter)
+            Array.Resize(ref bytes2, bytes2.Length - 7);
+
+            // Make bytes2 not match bytes1 in the second buffer
+            bytes2[StreamCompare.DefaultBufferSize] += 1;
+
+            using (var stream1 = new MemoryStream(bytes1))
+            using (var stream2 = new MemoryStream(bytes2))
+            {
+                var scompare = new StreamCompare();
+                Assert.IsFalse(await scompare.AreEqualAsync(stream1, stream2, false));
             }
         }
     }

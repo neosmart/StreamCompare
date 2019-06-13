@@ -147,12 +147,7 @@ namespace NeoSmart.StreamCompare
                     while (moreCount > 0)
                     {
                         // Try reading more from `lessRead`
-#if DEBUG
-                        // +1 in rng.Next() ranges is to prevent read of 0 bytes which can only signal end-of-file
-                        lessCount = await lessStream.ReadAsync(lessRead, 0, rng.Next(moreCount/2 + 1, moreCount + 1), cancel);
-#else
                         lessCount = await lessStream.ReadAsync(lessRead, 0, moreCount, cancel);
-#endif
 
                         if (lessCount == 0)
                         {
