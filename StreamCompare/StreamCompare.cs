@@ -103,11 +103,8 @@ namespace NeoSmart.StreamCompare
                 long bytesCompared = 0;
 #endif
 
-#if DEBUG
                 var task1 = stream1.ReadAsync(_buffer1, 0, BufferSize, cancel);
                 var task2 = stream2.ReadAsync(_buffer2, 0, BufferSize, cancel);
-#endif
-
                 var bytesRead = await Task.WhenAll(task1, task2);
                 var bytesRead1 = bytesRead[0];
                 var bytesRead2 = bytesRead[1];
