@@ -2,26 +2,26 @@
     <PropertyGroup>
         <AssemblyName>NeoSmart.StreamCompare</AssemblyName>
         <AssemblyOriginatorKeyFile>NeoSmart.StreamCompare.snk</AssemblyOriginatorKeyFile>
-        <AssemblyVersion>0.1.4.0</AssemblyVersion>
+        <AssemblyVersion>0.1.5.0</AssemblyVersion>
         <Authors>neosmart, Mahmoud Al-Qudsi</Authors>
         <Company>NeoSmart Technologies</Company>
         <Copyright>Copyright NeoSmart Technologies 2019</Copyright>
         <DelaySign>false</DelaySign>
         <Description>Easily and efficiently compare the contents of two Stream objects.</Description>
-        <FileVersion>0.1.4.0</FileVersion>
+        <FileVersion>0.1.5.0</FileVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <LangVersion>8.0</LangVersion>
         <PackageId>StreamCompare</PackageId>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageProjectUrl>http://neosmart.net/blog/2019/compare-streams-nuget/</PackageProjectUrl>
-        <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+        <PackageReleaseNotes>Internal optimizations and test coverage improvements</PackageReleaseNotes>
         <PackageTags>stream, comparison</PackageTags>
         <RepositoryType>git</RepositoryType>
         <RepositoryUrl>https://github.com/neosmart/StreamCompare</RepositoryUrl>
         <RootNamespace>NeoSmart.StreamCompare</RootNamespace>
         <SignAssembly>true</SignAssembly>
         <TargetFrameworks>netstandard1.3;netstandard2.0;netcoreapp2.2</TargetFrameworks>
-        <Version>0.1.4</Version>
+        <Version>0.1.5</Version>
     </PropertyGroup>
 
     <PropertyGroup>
