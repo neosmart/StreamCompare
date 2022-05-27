@@ -316,5 +316,18 @@ namespace NeoSmart.StreamCompare.Tests
                 Assert.IsFalse(await scompare.AreEqualAsync(stream1, stream2, false));
             }
         }
+
+        [TestMethod]
+        public async Task CompreWithNull()
+        {
+            var nonempty = new byte[10];
+
+            var scompare = new StreamCompare();
+
+            using (var stream1 = new MemoryStream(nonempty))
+            {
+                Assert.IsFalse(await scompare.AreEqualAsync(stream1,null));
+            }
+        }
     }
 }
