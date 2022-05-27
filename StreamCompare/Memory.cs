@@ -1,10 +1,9 @@
 using System;
-
 namespace NeoSmart.StreamCompare
 {
     internal class Memory
     {
-#if (NETCOREAPP2_2 || NETCOREAPP3_0)
+#if (NETCOREAPP2_2_OR_GREATER)
         // Using the platform-native Span<T>.SequenceEqual<T>(..)
         public static bool Compare(byte[] range1, int offset1, byte[] range2, int offset2, int count)
         {
@@ -53,7 +52,7 @@ namespace NeoSmart.StreamCompare
 
                     for (int i = 0; i < (count >> 3); ++i)
                     {
-                        if (*((UInt64*)x1) != *((UInt64*)x2))
+                        if (*((ulong*)x1) != *((ulong*)x2))
                         {
                             return false;
                         }
@@ -64,7 +63,7 @@ namespace NeoSmart.StreamCompare
 
                     if ((count & 4) != 0)
                     {
-                        if (*((UInt32*)x1) != *((UInt32*)x2))
+                        if (*((uint*)x1) != *((uint*)x2))
                         {
                             return false;
                         }
@@ -75,7 +74,7 @@ namespace NeoSmart.StreamCompare
 
                     if ((count & 2) != 0)
                     {
-                        if (*((UInt16*)x1) != *((UInt16*)x2))
+                        if (*((ushort*)x1) != *((ushort*)x2))
                         {
                             return false;
                         }
@@ -84,16 +83,13 @@ namespace NeoSmart.StreamCompare
                         x2 += 2;
                     }
 
-                    if ((count & 1) != 0)
+                    if ((count & 1) == 0) return true;
+                    if (*x1 != *x2)
                     {
-                        if (*((byte*)x1) != *((byte*)x2))
-                        {
-                            return false;
-                        }
+                        return false;
                     }
                 }
             }
-
             return true;
         }
 #endif

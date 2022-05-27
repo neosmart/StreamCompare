@@ -20,7 +20,7 @@
         <RepositoryUrl>https://github.com/neosmart/StreamCompare</RepositoryUrl>
         <RootNamespace>NeoSmart.StreamCompare</RootNamespace>
         <SignAssembly>true</SignAssembly>
-        <TargetFrameworks>netstandard1.3;netstandard2.0;netcoreapp2.2</TargetFrameworks>
+        <TargetFrameworks>netstandard1.3;netstandard2.0;net6.0</TargetFrameworks>
         <Version>0.1.5</Version>
     </PropertyGroup>
 

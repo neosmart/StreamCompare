@@ -9,10 +9,10 @@ namespace NeoSmart.StreamCompare
     public class StreamCompare
     {
         public static int DefaultBufferSize = 4096;
-        public readonly int BufferSize = DefaultBufferSize;
+        public readonly int BufferSize;
 
-        private byte[] _buffer1;
-        private byte[] _buffer2;
+        private readonly byte[] _buffer1;
+        private readonly byte[] _buffer2;
 
         public StreamCompare()
             : this(DefaultBufferSize)
@@ -133,8 +133,7 @@ namespace NeoSmart.StreamCompare
                 {
                     // Instead of duplicating the code for reading fewer bytes from file1 than file2
                     // for fewer bytes from file2 than file1, abstract that detail away.
-                    var lessCount = 0;
-                    var (lessRead, moreRead, moreCount, lessStream, moreStream) =
+                    var (lessRead, moreRead, moreCount, lessStream, _) =
                         bytesRead1 < bytesRead2
                             ? (_buffer1, _buffer2, bytesRead2 - sharedCount, stream1, stream2)
                             : (_buffer2, _buffer1, bytesRead1 - sharedCount, stream2, stream1);
@@ -142,7 +141,7 @@ namespace NeoSmart.StreamCompare
                     while (moreCount > 0)
                     {
                         // Try reading more from `lessRead`
-                        lessCount = await lessStream.ReadAsync(lessRead, 0, moreCount, cancel);
+                        int lessCount = await lessStream.ReadAsync(lessRead, 0, moreCount, cancel);
 
                         if (lessCount == 0)
                         {
